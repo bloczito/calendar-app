@@ -3,11 +3,9 @@ package com.tango.calendarapp.model;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.ZoneId;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -22,12 +20,26 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    @Column(unique = true)
+    private String username;
+
+    private String password;
+
     private String fullName;
 
-    private String username;
-    private String password;
+    @Column(unique = true)
+    private String email;
 
     private UUID companyId;
 
     private ZoneId zoneId;
+
+    @OneToMany(mappedBy = "manager")
+    private Set<ConferenceRoom> conferenceRooms;
+
+    @OneToMany(mappedBy = "owner")
+    private Set<CalendarEvent> ownedCalendarEvents;
+
+    @ManyToMany
+    private Set<CalendarEvent> calendarEvents;
 }
