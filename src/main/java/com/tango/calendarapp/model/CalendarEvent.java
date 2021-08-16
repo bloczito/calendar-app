@@ -1,10 +1,18 @@
 package com.tango.calendarapp.model;
 
+import lombok.*;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class CalendarEvent {
 
     @Id
@@ -25,6 +33,6 @@ public class CalendarEvent {
     private ConferenceRoom conferenceRoom;
 
     @ManyToMany
-    private List<User> participants;
+    private Set<User> participants;
 
 }

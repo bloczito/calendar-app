@@ -42,7 +42,7 @@ public class ConferenceRoomController {
                 .getById(id)
                 .map(ConferenceRoomResponse::of)
                 .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.noContent().build());
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping

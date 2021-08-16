@@ -7,6 +7,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+
 @Component
 public class Utils {
 
@@ -23,5 +27,18 @@ public class Utils {
         return userService
                 .getByUsername(principal.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
+
+    public LocalDateTime parseDateToUTC(LocalDateTime localDateTime) {
+        return localDateTime
+                .atZone(getCurrentUser().getZoneId())
+                .withZoneSameInstant(ZoneId.of("UTC"))
+                .toLocalDateTime();
+    }
+
+    public LocalDateTime parseDateToUserZone(LocalDateTime localDateTime) {
+        return ZonedDateTime
+                .of(localDateTime, getCurrentUser().getZoneId())
+                .toLocalDateTime();
     }
 }

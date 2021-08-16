@@ -29,16 +29,7 @@ public class ConferenceRoomService {
 
 
     public ConferenceRoom createConferenceRoom(CreateConferenceRoomRequest request) {
-        User currentUser = utils.getCurrentUser();
-
-        ConferenceRoom newConferenceRoom = ConferenceRoom.builder()
-                .name(request.getName())
-                .companyId(currentUser.getCompanyId())
-                .address(request.getAddress())
-                .manager(currentUser)
-                .build();
-
-        return conferenceRoomRepository.save(newConferenceRoom);
+        return conferenceRoomRepository.save(parse(request));
     }
 
     public List<ConferenceRoom> getCompanyConferenceRooms() {
@@ -47,6 +38,18 @@ public class ConferenceRoomService {
 
     public Optional<ConferenceRoom> getById(Long id) {
         return conferenceRoomRepository.getByIdAndCompanyId(id, utils.getCurrentUser().getCompanyId());
+    }
+
+
+    private ConferenceRoom parse(CreateConferenceRoomRequest request) {
+        User currentUser = utils.getCurrentUser();
+
+        return ConferenceRoom.builder()
+                .name(request.getName())
+                .companyId(currentUser.getCompanyId())
+                .address(request.getAddress())
+                .manager(currentUser)
+                .build();
     }
 
 }
