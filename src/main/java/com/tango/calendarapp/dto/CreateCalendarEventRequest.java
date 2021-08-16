@@ -1,14 +1,17 @@
 package com.tango.calendarapp.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class CreateCalendarEventRequest {
 
     private String name;

@@ -7,12 +7,15 @@ import com.tango.calendarapp.model.CalendarEvent;
 import com.tango.calendarapp.service.CalendarEventService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -29,9 +32,12 @@ public class CalendarEventController {
 
 
     @GetMapping
-    public ResponseEntity<List<CalendarEventResponse>> getAll() {
-        List<CalendarEvent> asdasdasd = calendarEventService.getAllUserEvents();
-        return ResponseEntity.ok(asdasdasd
+    public ResponseEntity<List<CalendarEventResponse>> getAll(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Optional<LocalDate> day,
+            @RequestParam(name = "location_id") Optional<Long> locationId,
+            @RequestParam Optional<String> query
+    ) {
+        return ResponseEntity.ok(calendarEventService.getAllUserEvents(day, query, locationId)
                 .stream()
                 .map(calendarEventService::parseToDTO)
                 .collect(Collectors.toList())

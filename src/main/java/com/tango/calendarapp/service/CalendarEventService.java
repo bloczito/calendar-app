@@ -9,10 +9,9 @@ import com.tango.calendarapp.model.User;
 import com.tango.calendarapp.repository.CalendarEventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
@@ -46,12 +45,20 @@ public class CalendarEventService {
     @Value("${calendar.event.maxDuration}")
     private long eventMaxDuration;
 
-    public List<CalendarEvent> getAllUserEvents() {
-        return calendarEventRepository.getAllByParticipantsContains(utils.getCurrentUser());
+    public List<CalendarEvent> getAllUserEvents(
+            Optional<LocalDate> date,
+            Optional<String> query,
+            Optional<Long> locationId
+    ) {
+        return calendarEventRepository.getAllByDateLocationAndQuery(
+                date,
+                locationId.isPresent() ? conferenceRoomService.getById(locationId.get()) : Optional.empty(),
+                query
+        );
     }
 
     public Optional<CalendarEvent> getById(Long id) {
-        return calendarEventRepository.getAllByIdAndParticipantsContains(id, utils.getCurrentUser());
+        return calendarEventRepository.getByIdAndParticipantsContains(id, utils.getCurrentUser());
     }
 
 
