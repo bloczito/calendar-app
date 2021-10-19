@@ -31,6 +31,9 @@ public class CalendarEventController {
     }
 
 
+
+
+
     @GetMapping
     public ResponseEntity<List<CalendarEventResponse>> getAll(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Optional<LocalDate> day,
